@@ -14,14 +14,13 @@ public class StatefulServiceTest {
         StatefulService statefulService2 = ac.getBean(StatefulService.class);
 
         //Thread: A사용자 10000원 주문
-        statefulService1.order("userA", 10000);
+        int userAPrice = statefulService1.order("userA", 10000);
         //Thread: B사용자 20000원 주문
-        statefulService2.order("userB", 20000);
+        int userBPrice = statefulService2.order("userB", 20000);
 
         //Thread: A사용자 주문 금액 조회
-        int price = statefulService1.getPrice();
-        //ThreadA: 사용자A 10000원을 기대했지만, 기대와 다르게 20000원 출력
-        System.out.println("price = " + price);
+        System.out.println("price = " + userAPrice);
+
 
 
     }
