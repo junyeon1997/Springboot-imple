@@ -1,0 +1,17 @@
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:test //In-Memory방식으로 연결, 별다른 설정 없으면 스프링부트가 자동으로 In-Memory방식으로 연결
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+##        show_sql: true
+#        format_sql: true
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
