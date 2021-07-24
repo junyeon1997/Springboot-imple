@@ -2,12 +2,15 @@ package demo.myweb.controller;
 
 import demo.myweb.model.Board;
 import demo.myweb.repository.BoardRepository;
+import demo.myweb.service.BoardService;
 import demo.myweb.validator.BoardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,8 @@ public class BoardController {
     private BoardRepository boardRepository;
     @Autowired
     private BoardValidator boardValidator;
+    @Autowired
+    private BoardService boardService;
 
     @GetMapping("/list")
     public String list(Model model, @PageableDefault(size = 2) Pageable pageable,
@@ -50,11 +55,13 @@ public class BoardController {
     }
 
     @PostMapping("/form")
-    public String submit(@Valid Board board, BindingResult bindingResult) {
+    public String submit(@Valid Board board, BindingResult bindingResult, Authentication authentication) {
         boardValidator.validate(board, bindingResult);
         if(bindingResult.hasErrors()) {
             return"board/form";
         }
+        String username = authentication.getName();
+        boardService.save(username, board);
         boardRepository.save(board);
         return "redirect:/board/list";
     }
